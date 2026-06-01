@@ -91,7 +91,7 @@ export default function AskChatInterface({
     } catch (err) {
       setMessages([
         ...newMessages,
-        { role: "assistant", content: "### Connection Error\nCould not connect to Ananta API." },
+        { role: "assistant", content: "### Connection Error\nCould not connect to AskViveka API." },
       ]);
     } finally {
       setLoading(false);
@@ -102,6 +102,12 @@ export default function AskChatInterface({
     e.preventDefault();
     if (!input.trim() || loading) return;
     const queryToSend = input;
+
+    if (!user) {
+      router.push(`/auth/login?next=${encodeURIComponent(`/ask?q=${encodeURIComponent(queryToSend)}`)}`);
+      return;
+    }
+
     setInput("");
     await handleAutoSubmit(queryToSend);
   };
@@ -123,7 +129,7 @@ export default function AskChatInterface({
     router.push("/ask");
   };
 
-  // Simple Markdown parser for Ananta's structured prompt outputs
+  // Simple Markdown parser for AskViveka's structured prompt outputs
   const renderMessageContent = (content: string) => {
     const sections = content.split(/(?=### )/);
 
@@ -261,11 +267,11 @@ export default function AskChatInterface({
               </div>
               
               <h2 className="text-xl font-extrabold tracking-widest text-white font-serif uppercase">
-                Ask Ananta
+                AskViveka
               </h2>
               
               <p className="text-sm text-zinc-400 mt-3 leading-relaxed font-medium max-w-md">
-                Describe a modern challenge or emotional obstacle you face today (e.g., anxiety, failure, stress, decision paralysis). Ananta will retrieve grounded Bhagavad Gita teachings to frame a peaceful reflection.
+                Describe a modern challenge or emotional obstacle you face today (e.g., anxiety, failure, stress, decision paralysis). AskViveka will retrieve grounded Bhagavad Gita teachings to frame a peaceful reflection.
               </p>
             </div>
           ) : (
@@ -284,7 +290,7 @@ export default function AskChatInterface({
                   {/* Speaker Label */}
                   <div className="flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-500/80 mb-1">
                     <Sparkle className="size-3 text-amber-500" />
-                    <span>{m.role === "user" ? "You" : "Ananta AI Guide"}</span>
+                    <span>{m.role === "user" ? "You" : "AskViveka AI Guide"}</span>
                   </div>
 
                   {/* Body */}

@@ -24,7 +24,7 @@ export default function Navbar({ user }: NavbarProps) {
 
   const navItems = [
     { name: "Chapters", href: "/chapters", icon: Compass },
-    { name: "Ask Ananta", href: "/ask", icon: MessageSquare },
+    { name: "AskViveka", href: "/ask", icon: MessageSquare },
     { name: "Search", href: "/search", icon: Search },
     { name: "Daily Wisdom", href: "/daily", icon: BookOpen },
     { name: "Bookmarks", href: "/bookmarks", icon: Bookmark, authRequired: true },
@@ -33,7 +33,7 @@ export default function Navbar({ user }: NavbarProps) {
 
   const filteredItems = navItems.filter((item) => {
     if (item.authRequired && !user) return false;
-    if (item.adminRequired && (!user || user.email !== "admin@ananta.ai")) return false;
+    if (item.adminRequired && (!user || user.email !== "admin@askviveka.ai")) return false;
     return true;
   });
 
@@ -44,23 +44,23 @@ export default function Navbar({ user }: NavbarProps) {
         {/* Brand Logo & Name */}
         <div className="flex items-center gap-6">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative size-9 overflow-hidden rounded-full border border-amber-500/30 bg-zinc-950 p-0.5 shadow-[0_0_10px_rgba(245,158,11,0.15)] animate-float-slow transition-all duration-300 group-hover:border-amber-500/60">
+            <div className="relative size-12 overflow-hidden rounded-full border border-amber-500/30 bg-zinc-950 p-0.5 shadow-[0_0_10px_rgba(245,158,11,0.15)] animate-float-slow transition-all duration-300 group-hover:border-amber-500/60">
               <Image
                 src="/logo.png"
-                alt="Ananta Logo"
+                alt="AskViveka Logo"
                 fill
-                sizes="36px"
+                sizes="40px"
                 className="object-contain p-1"
               />
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <span className="text-base font-extrabold tracking-widest text-white group-hover:text-amber-400 transition-colors leading-none uppercase font-sans">
-                Ananta
+                AskViveka
               </span>
               <span className="text-[10px] font-bold text-zinc-450 tracking-wider leading-none mt-1 group-hover:text-zinc-300 transition-colors uppercase">
                 Timeless Wisdom
               </span>
-            </div>
+            </div> */}
           </Link>
         </div>
 

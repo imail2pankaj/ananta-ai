@@ -2,11 +2,11 @@ import { loginWithEmail, signupWithEmail, loginWithGoogle } from "./actions";
 import { Lock, Mail, Star } from "lucide-react";
 
 interface LoginPageProps {
-  searchParams: Promise<{ error?: string; message?: string }>;
+  searchParams: Promise<{ error?: string; message?: string; next?: string }>;
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const { error, message } = await searchParams;
+  const { error, message, next } = await searchParams;
 
   return (
     <div className="flex flex-1 items-center justify-center py-20 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-black">
@@ -17,7 +17,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <div className="inline-flex items-center gap-1 mb-2">
             <Star className="size-5 text-amber-500 fill-amber-500" />
             <span className="text-xl font-bold tracking-tight text-indigo-950 dark:text-zinc-50">
-              Ananta
+              AskViveka
             </span>
           </div>
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
@@ -43,6 +43,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
         {/* Credentials Form */}
         <form className="mt-6 space-y-4">
+          <input type="hidden" name="next" value={next || ""} />
           <div>
             <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
               Email Address
@@ -109,6 +110,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
         {/* OAuth Form */}
         <form action={loginWithGoogle}>
+          <input type="hidden" name="next" value={next || ""} />
           <button
             type="submit"
             className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border border-zinc-300 bg-white hover:bg-zinc-50 text-sm font-semibold text-zinc-700 shadow-sm transition-all dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"

@@ -19,11 +19,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ananta - Ancient Wisdom for Modern Life",
+  title: "AskViveka - Ancient Wisdom for Modern Life",
   description: "Navigate anxiety, fear, success, and relationships using timeless guidance grounded in Bhagavad Gita scripture.",
   keywords: ["Bhagavad Gita", "wisdom", "mindfulness", "stress relief", "spiritual guidance", "philosophy"],
   openGraph: {
-    title: "Ananta - Ancient Wisdom for Modern Life",
+    title: "AskViveka - Ancient Wisdom for Modern Life",
     description: "timeless scriptures decoded for modern mental clarity and life guidance.",
     type: "website",
   },
@@ -42,6 +42,7 @@ export default async function RootLayout({
     <html
       lang="en"
       className={cn(
+        "dark",
         "h-full",
         "antialiased",
         geistSans.variable,

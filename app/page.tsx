@@ -5,15 +5,31 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Star, ArrowRight, MessageSquare, Compass, ShieldCheck, HelpCircle } from "lucide-react";
 import Image from "next/image";
+import { checkUserSessionAction } from "@/app/ask/actions";
 
 export default function LandingPage() {
   const router = useRouter();
   const [prompt, setPrompt] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!prompt.trim()) return;
-    router.push(`/ask?q=${encodeURIComponent(prompt)}`);
+    
+    const isLoggedIn = await checkUserSessionAction();
+    if (isLoggedIn) {
+      router.push(`/ask?q=${encodeURIComponent(prompt)}`);
+    } else {
+      router.push(`/auth/login?next=${encodeURIComponent(`/ask?q=${encodeURIComponent(prompt)}`)}`);
+    }
+  };
+
+  const handleMindStateClick = async (query: string) => {
+    const isLoggedIn = await checkUserSessionAction();
+    if (isLoggedIn) {
+      router.push(`/ask?q=${encodeURIComponent(query)}`);
+    } else {
+      router.push(`/auth/login?next=${encodeURIComponent(`/ask?q=${encodeURIComponent(query)}`)}`);
+    }
   };
 
   const stars = [
@@ -164,7 +180,7 @@ export default function LandingPage() {
             <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/5 to-indigo-950/10 blur opacity-60 pointer-events-none" />
             <Image
               src="/logo.png"
-              alt="Ananta Lotus Symbol"
+              alt="AskViveka Lotus Symbol"
               fill
               sizes="112px"
               priority
@@ -209,7 +225,7 @@ export default function LandingPage() {
               type="submit"
               className="inline-flex items-center justify-center rounded-xl bg-amber-600 px-6 py-3.5 text-xs font-bold text-zinc-950 shadow-md hover:bg-amber-500 transition-all duration-200"
             >
-              Ask Ananta
+              AskViveka
               <ArrowRight className="size-4 ml-1.5" />
             </button>
           </form>
@@ -227,7 +243,7 @@ export default function LandingPage() {
           {mindStates.map((state) => (
             <button
               key={state.title}
-              onClick={() => router.push(`/ask?q=${encodeURIComponent(state.query)}`)}
+              onClick={() => handleMindStateClick(state.query)}
               className={`group relative flex gap-4 p-5 rounded-2xl border text-left bg-zinc-900/30 backdrop-blur-sm shadow-sm transition-all duration-350 hover:scale-[1.01] hover:-translate-y-0.5 border-zinc-800/80 hover:bg-zinc-900/50 hover:border-zinc-700/60`}
             >
               <div className={`absolute inset-0 rounded-2xl bg-gradient-to-tr ${state.color} opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none`} />
@@ -290,7 +306,7 @@ export default function LandingPage() {
               Context-Grounded AI
             </h3>
             <p className="text-[13px] leading-relaxed text-zinc-400 font-medium">
-              Ask life's questions. Ananta performs vector searches to retrieve context from verses and commentaries to build tailored reflections.
+              Ask life's questions. AskViveka performs vector searches to retrieve context from verses and commentaries to build tailored reflections.
             </p>
           </div>
 

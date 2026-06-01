@@ -10,8 +10,8 @@ export default async function AdminDashboardPage() {
   // RSC Auth check
   const { data: { user } } = await supabase.auth.getUser();
 
-  // For demonstration / SaaS safety, we'll verify the email matches "admin@ananta.ai"
-  const isAdmin = user && user.email === "admin@ananta.ai";
+  // For demonstration / SaaS safety, we'll verify the email matches "admin@askviveka.ai"
+  const isAdmin = user && user.email === "admin@askviveka.ai";
 
   if (!isAdmin) {
     return (
@@ -22,7 +22,7 @@ export default async function AdminDashboardPage() {
             Access Restricted
           </h2>
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mb-6">
-            Only authorized administrators can access the Ananta dashboard, modify scriptures, or inspect server-level usage logs.
+            Only authorized administrators can access the AskViveka dashboard, modify scriptures, or inspect server-level usage logs.
           </p>
           <Link
             href="/"
@@ -64,7 +64,7 @@ export default async function AdminDashboardPage() {
               <span>Admin Console</span>
             </div>
             <h1 className="text-3xl font-extrabold tracking-tight text-indigo-950 dark:text-zinc-50 font-serif">
-              Ananta Dashboard
+              AskViveka Dashboard
             </h1>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50/80 px-3 py-1.5 text-xs font-semibold text-red-900 dark:bg-zinc-900 dark:text-red-400">

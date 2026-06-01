@@ -22,7 +22,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <Compass className="size-4 text-amber-500 animate-spin-slow" />
               <span className="text-base font-extrabold tracking-widest text-white uppercase font-sans">
-                Ananta
+                AskViveka
               </span>
             </div>
             <p className="text-xs text-zinc-400 text-center sm:text-left font-medium mt-1">
@@ -47,8 +47,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 border-t border-zinc-900/50 pt-6 text-center">
-          <p className="text-[10px] text-zinc-550 font-semibold tracking-wide">
-            © {new Date().getFullYear()} Ananta Platform. Secular spiritual wisdom for mental clarity. Not medical or therapeutic advice.
+          <p className="text-[14px] text-zinc-400 font-semibold tracking-wide">
+            © {new Date().getFullYear()} AskViveka Platform. Secular spiritual wisdom for mental clarity. Not medical or therapeutic advice.
           </p>
         </div>
       </div>
