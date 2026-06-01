@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Compass, MessageSquare, Search, BookOpen, Bookmark, User, ShieldAlert, LogOut, Sparkles } from "lucide-react";
+import { Compass, MessageSquare, Search, BookOpen, Bookmark, User, ShieldAlert, LogOut, Sparkles, Menu, X } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { signOutAction } from "@/app/auth/login/actions";
+import { useState } from "react";
 
 interface NavbarProps {
   user: any; // User object from Supabase Auth
@@ -14,6 +15,7 @@ interface NavbarProps {
 export default function Navbar({ user }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOutAction();
@@ -108,8 +110,45 @@ export default function Navbar({ user }: NavbarProps) {
               Sign In
             </Link>
           )}
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden rounded-xl border border-zinc-800 bg-zinc-950/80 p-2 text-zinc-400 hover:text-zinc-200 transition-all focus:outline-none"
+            aria-label="Toggle Menu"
+          >
+            {isOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {isOpen && (
+        <div className="md:hidden absolute top-16 left-0 w-full border-b border-zinc-900 bg-zinc-950/95 backdrop-blur-lg shadow-2xl z-40 animate-fade-in">
+          <nav className="flex flex-col gap-1.5 p-4">
+            {filteredItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "flex items-center gap-2.5 rounded-xl px-4 py-3 text-xs font-bold uppercase tracking-wider transition-all duration-200",
+                    isActive
+                      ? "bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.05)]"
+                      : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200 border border-transparent"
+                  )}
+                >
+                  <Icon className={cn("size-4", isActive ? "text-amber-400" : "text-zinc-400")} />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
