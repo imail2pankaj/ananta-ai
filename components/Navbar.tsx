@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Compass, MessageSquare, Search, BookOpen, Bookmark, User, ShieldAlert, LogOut, Sparkles } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { signOutAction } from "@/app/auth/login/actions";
 
 interface NavbarProps {
   user: any; // User object from Supabase Auth
@@ -15,11 +16,7 @@ export default function Navbar({ user }: NavbarProps) {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    const response = await fetch("/auth/signout", { method: "POST" });
-    if (response.ok) {
-      router.refresh();
-      router.push("/");
-    }
+    await signOutAction();
   };
 
   const navItems = [
