@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase";
 import Link from "next/link";
 import { ArrowLeft, Play, Bookmark, BookmarkCheck, Star, Sparkles, Sparkle } from "lucide-react";
 import VerseDetailTabs from "@/components/VerseDetailTabs";
@@ -14,7 +14,7 @@ export default async function VerseDetailPage({ params }: VersePageProps) {
   const chapterNumberInt = parseInt(chapterNum, 10);
   const verseNumberInt = parseInt(verseNum, 10);
 
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   // Get chapter directly (eliminating redundant scripture query)
   const { data: chapter } = await supabase

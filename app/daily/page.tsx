@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase";
+import { createClient, createAdminClient } from "@/lib/supabase";
 import { toggleBookmarkAction } from "@/app/bookmarks/actions";
 import VerseCard from "@/components/VerseCard";
 import { BookOpen, Star, Sparkles } from "lucide-react";
@@ -16,10 +16,10 @@ export default async function DailyWisdomPage() {
   // Seed index between 0 and 718 (total verses count is 719)
   const seededIndex = (dayOfYear * 37) % 719;
 
-  const supabase = await createClient();
+  const adminSupabase = createAdminClient();
 
   // 2. Fetch the verse at that stable sorted offset
-  const { data: verse, error: verseError } = await supabase
+  const { data: verse, error: verseError } = await adminSupabase
     .from("verses")
     .select(`
       id,
@@ -42,7 +42,7 @@ export default async function DailyWisdomPage() {
   }
 
   // 3. Fetch first translation for this verse to display as snippet
-  const { data: interpretation } = await supabase
+  const { data: interpretation } = await adminSupabase
     .from("verse_interpretations")
     .select("translation, author:authors(name)")
     .eq("verse_id", verse.id)
@@ -51,6 +51,7 @@ export default async function DailyWisdomPage() {
     .maybeSingle();
 
   // 4. RSC Level Auth check
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   // Check if bookmarked

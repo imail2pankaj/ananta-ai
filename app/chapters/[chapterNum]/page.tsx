@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase";
 import Link from "next/link";
 import { Compass, BookOpen, ChevronRight, Play, ArrowLeft, Star, Sparkles, Sparkle } from "lucide-react";
 
@@ -18,7 +18,7 @@ export default async function ChapterDetailPage({ params }: ChapterPageProps) {
   const { chapterNum } = await params;
   const chapterNumberInt = parseInt(chapterNum, 10);
 
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   // Get Chapter details directly (eliminating redundant scripture query)
   const { data: chapter, error: chapterError } = await supabase

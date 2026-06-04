@@ -1,11 +1,11 @@
-import { createClient } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase";
 import Link from "next/link";
 import { Compass, BookOpen, ChevronRight, Star, Sparkles } from "lucide-react";
 
 export const revalidate = 3600; // Cache for 1 hour
 
 export default async function ChaptersPage() {
-  const supabase = await createClient();
+  const supabase = createAdminClient();
 
   // Get scriptures
   const { data: scripture } = await supabase

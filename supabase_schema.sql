@@ -137,3 +137,20 @@ BEGIN
   LIMIT match_count;
 END;
 $$;
+
+-- 9. Enable public read access on scriptures tables (in case RLS is enabled by default in Supabase Dashboard)
+ALTER TABLE scriptures ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read access to scriptures" ON scriptures FOR SELECT USING (true);
+
+ALTER TABLE chapters ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read access to chapters" ON chapters FOR SELECT USING (true);
+
+ALTER TABLE verses ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read access to verses" ON verses FOR SELECT USING (true);
+
+ALTER TABLE authors ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read access to authors" ON authors FOR SELECT USING (true);
+
+ALTER TABLE verse_interpretations ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public read access to verse_interpretations" ON verse_interpretations FOR SELECT USING (true);
+

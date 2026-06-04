@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase";
+import { createClient, createAdminClient } from "@/lib/supabase";
 import Link from "next/link";
 import { toggleBookmarkAction } from "@/app/bookmarks/actions";
 import VerseCard from "@/components/VerseCard";
@@ -67,24 +67,45 @@ export default async function BookmarksPage() {
   }
 
   // Fetch user bookmarks
-  const { data: bookmarks, error } = await supabase
+  const { data: bookmarksData, error } = await supabase
     .from("bookmarks")
-    .select(`
-      id,
-      verse:verses(
+    .select("id, verse_id")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Bookmarks fetch error:", error);
+  }
+
+  let bookmarks: any[] = [];
+  if (bookmarksData && bookmarksData.length > 0) {
+    const verseIds = bookmarksData.map(b => b.verse_id);
+    const adminSupabase = createAdminClient();
+    const { data: verses, error: versesError } = await adminSupabase
+      .from("verses")
+      .select(`
         id,
         verse_number,
         speaker,
         sanskrit_text,
         transliteration,
         chapter:chapters(chapter_number)
-      )
-    `)
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+      `)
+      .in("id", verseIds);
 
-  if (error) {
-    console.error("Bookmarks fetch error:", error);
+    if (versesError) {
+      console.error("Bookmarks verses fetch error:", versesError);
+    }
+
+    if (verses) {
+      const versesMap = new Map(verses.map(v => [v.id, v]));
+      bookmarks = bookmarksData
+        .map(b => ({
+          id: b.id,
+          verse: versesMap.get(b.verse_id)
+        }))
+        .filter(b => b.verse !== undefined);
+    }
   }
 
   return (

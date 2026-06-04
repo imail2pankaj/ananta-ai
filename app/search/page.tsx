@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase";
+import { createAdminClient } from "@/lib/supabase";
 import Link from "next/link";
 import { Search, Compass, ChevronRight, Play, Star, Sparkles, Sparkle } from "lucide-react";
 
@@ -14,7 +14,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   let errorMsg = "";
 
   if (query) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     // Perform text search over verse interpretations
     const { data, error } = await supabase
