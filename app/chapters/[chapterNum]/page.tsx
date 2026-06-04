@@ -6,32 +6,24 @@ interface ChapterPageProps {
   params: Promise<{ chapterNum: string }>;
 }
 
+export const revalidate = 86400; // Cache for 24 hours
+
+export async function generateStaticParams() {
+  return Array.from({ length: 18 }, (_, i) => ({
+    chapterNum: String(i + 1),
+  }));
+}
+
 export default async function ChapterDetailPage({ params }: ChapterPageProps) {
   const { chapterNum } = await params;
   const chapterNumberInt = parseInt(chapterNum, 10);
 
   const supabase = await createClient();
 
-  // Get Bhagavad Gita scripture
-  const { data: scripture } = await supabase
-    .from("scriptures")
-    .select("*")
-    .eq("slug", "bhagavad-gita")
-    .single();
-
-  if (!scripture) {
-    return (
-      <div className="flex-1 py-16 px-4 text-center bg-[#030308] text-zinc-100">
-        <p className="text-zinc-450 uppercase font-bold text-xs">Scripture not found</p>
-      </div>
-    );
-  }
-
-  // Get Chapter details
+  // Get Chapter details directly (eliminating redundant scripture query)
   const { data: chapter, error: chapterError } = await supabase
     .from("chapters")
     .select("*")
-    .eq("scripture_id", scripture.id)
     .eq("chapter_number", chapterNumberInt)
     .single();
 

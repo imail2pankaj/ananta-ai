@@ -7,6 +7,8 @@ interface VersePageProps {
   params: Promise<{ chapterNum: string; verseNum: string }>;
 }
 
+export const revalidate = 86400; // Cache for 24 hours
+
 export default async function VerseDetailPage({ params }: VersePageProps) {
   const { chapterNum, verseNum } = await params;
   const chapterNumberInt = parseInt(chapterNum, 10);
@@ -14,26 +16,10 @@ export default async function VerseDetailPage({ params }: VersePageProps) {
 
   const supabase = await createClient();
 
-  // Get scripture
-  const { data: scripture } = await supabase
-    .from("scriptures")
-    .select("*")
-    .eq("slug", "bhagavad-gita")
-    .single();
-
-  if (!scripture) {
-    return (
-      <div className="flex-1 py-16 text-center bg-[#030308] text-zinc-100">
-        <p className="text-zinc-450 uppercase font-bold text-xs">Scripture not found</p>
-      </div>
-    );
-  }
-
-  // Get chapter
+  // Get chapter directly (eliminating redundant scripture query)
   const { data: chapter } = await supabase
     .from("chapters")
-    .select("*")
-    .eq("scripture_id", scripture.id)
+    .select("id, chapter_number")
     .eq("chapter_number", chapterNumberInt)
     .single();
 
